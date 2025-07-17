@@ -7,19 +7,18 @@ import Testimonials from "../components/testemonial";
 
 
 export default function Home() {
-    return (<><div className="w-full bg-gradient-to-t from-white to-[#01A4D5] ">
-  <BannerCarousel/>
-  <ProductCategorySection/>
-  <OfferBanner/>
-        <Products/>
-        
-        <Testimonials/>
-  
-        
-    </div>
-  
-    </>
-      
-    );
-  }
-  
+  return (<><div className="w-full bg-gradient-to-t from-white to-[#01A4D5] ">
+    <BannerCarousel />
+    <ProductCategorySection />
+    <OfferBanner />
+    <Products />
+
+    <Testimonials />
+
+
+  </div>
+
+  </>
+
+  );
+}

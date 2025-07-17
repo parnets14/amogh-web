@@ -55,7 +55,7 @@ const OfferBanner = () => {
                 index === currentIndex ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              <div className={`bg-gradient-to-r from-[#01A4D5]   to-white text-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row`}>
+              <div className={`md:bg-gradient-to-r from-[#01A4D5]  bg-gradient-to-b from-[#01A4D5]  to-white text-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row`}>
                 <div className="md:w-1/2 p-6 md:p-10 flex flex-col justify-center">
                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
                     {offer.title}
