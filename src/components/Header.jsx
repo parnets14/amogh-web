@@ -111,7 +111,7 @@ export default function Header() {
             <Link to="/wishlist" className="relative text-gray-700 hover:text-blue-600 transition-colors">
               <FiHeart className="w-5 h-5" />
               {wishlistItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-[#01A4D5] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {wishlistItems}
                 </span>
               )}

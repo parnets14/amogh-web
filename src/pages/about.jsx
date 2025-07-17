@@ -79,7 +79,7 @@ export default function About() {
   return (
     <div className="w-full bg-gray-50">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden bg-gradient-to-r from-indigo-500 to-blue-600">
+      <section className="relative py-20 overflow-hidden bg-gradient-to-t from-white to-[#01A4D5] ">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0 bg-[url('/pattern.png')] bg-repeat opacity-10"></div>
         </div>
@@ -98,7 +98,7 @@ export default function About() {
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
-                to="/products"
+                to="/allproduct"
                 className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-all duration-200 shadow-lg hover:shadow-xl"
                 aria-label="Shop our medical products"
               >
@@ -192,7 +192,7 @@ export default function About() {
                   </div>
                 </div>
               </div>
-              <div className="bg-blue-600 p-8 sm:p-12 flex items-center justify-center">
+              <div className="bg-gradient-to-r from-white to-[#01A4D5] p-8 sm:p-12 flex items-center justify-center">
                 <img 
                   src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
                   alt="Medical professionals using our equipment"
