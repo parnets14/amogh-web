@@ -11,19 +11,16 @@ export default function MedicalProductCarousel() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [slidesToShow, setSlidesToShow] = useState(2); // Default to 2 for mobile
-  const [isHovering, setIsHovering] = useState(false);
 
   // Responsive slides calculation
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1280) {
-        setSlidesToShow(4); // xl screens show 4
-      } else if (window.innerWidth >= 1024) {
-        setSlidesToShow(3); // lg screens show 3
-      } else if (window.innerWidth >= 640) {
-        setSlidesToShow(2); // sm screens show 2
+      if (window.innerWidth >= 1024) {
+        setSlidesToShow(4); // lg screens show 4
+      } else if (window.innerWidth >= 768) {
+        setSlidesToShow(3); // md screens show 3
       } else {
-        setSlidesToShow(2); // xs screens show 1
+        setSlidesToShow(2); // default show 2
       }
       // Reset to first slide when screen size changes to prevent empty space
       setCurrentSlide(0);
@@ -87,33 +84,25 @@ export default function MedicalProductCarousel() {
     }
   };
 
-  // Auto-rotate slides when not hovering
+  // Auto-rotate slides
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isHovering) {
-        nextSlide();
-      }
+      nextSlide();
     }, 5000);
     return () => clearInterval(interval);
-  }, [slidesToShow, isHovering]);
+  }, [slidesToShow]);
 
   return (
-    <div className="w-full py-12 px-4 sm:px-6 lg:px-8 relative bg-gray-50">
+    <div className="w-full py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">Latest Projects</h2>
-        <p className="text-gray-600 text-center mb-8 max-w-2xl mx-auto">
-          Explore our newest medical equipment solutions
-        </p>
+        <p className="text-gray-600 text-center mb-8">Explore our newest medical equipment solutions</p>
         
-        <div 
-          className="relative overflow-hidden"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
+        <div className="relative overflow-hidden">
           {/* Navigation Arrows */}
           <button 
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 ml-2 hover:bg-indigo-50"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 ml-2"
             aria-label="Previous products"
           >
             <ChevronLeft size={24} className="text-indigo-600" />
@@ -121,7 +110,7 @@ export default function MedicalProductCarousel() {
           
           <button 
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 mr-2 hover:bg-indigo-50"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 mr-2"
             aria-label="Next products"
           >
             <ChevronRight size={24} className="text-indigo-600" />
@@ -130,10 +119,7 @@ export default function MedicalProductCarousel() {
           {/* Carousel Container */}
           <div 
             className="flex transition-transform duration-500 ease-in-out"
-            style={{ 
-              transform: `translateX(-${currentSlide * (100 / slidesToShow)}%)`,
-              width: `${(medicalProducts.length * 100) / slidesToShow}%`
-            }}
+            style={{ transform: `translateX(-${currentSlide * (100 / slidesToShow)}%)` }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -164,7 +150,7 @@ export default function MedicalProductCarousel() {
                     onClick={() => toggleWishlist(product.id)}
                     className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all duration-200 ${
                       wishlist.includes(product.id)
-                        ? "text-red-500 bg-white shadow-md"
+                        ? "text-red-500 bg-white shadow-md animate-pulse"
                         : "text-gray-400 bg-white/80 hover:bg-white hover:text-red-500"
                     }`}
                     aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
@@ -206,7 +192,6 @@ export default function MedicalProductCarousel() {
                       <Link
                         to={`/products/${product.slug}`}
                         className="hover:text-indigo-500 transition-colors duration-200"
-                        title={product.name}
                       >
                         {product.name}
                       </Link>
@@ -216,21 +201,21 @@ export default function MedicalProductCarousel() {
                     <div className="mb-3 space-y-1.5 text-xs text-gray-600">
                       <div className="flex items-start">
                         <Zap className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
-                        <div className="truncate" title={product.technology}>
+                        <div>
                           <strong className="text-gray-700">Technology: </strong>
                           <span>{product.technology}</span>
                         </div>
                       </div>
                       <div className="flex items-start">
                         <Zap className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
-                        <div className="truncate" title={product.throughput}>
+                        <div>
                           <strong className="text-gray-700">Throughput: </strong>
                           <span>{product.throughput}</span>
                         </div>
                       </div>
                       <div className="flex items-start">
                         <Info className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
-                        <div className="truncate" title={product.sampleType}>
+                        <div>
                           <strong className="text-gray-700">Sample: </strong>
                           <span>{product.sampleType}</span>
                         </div>
@@ -325,7 +310,7 @@ export default function MedicalProductCarousel() {
               className={`w-3 h-3 rounded-full transition-all duration-200 ${
                 currentSlide >= index * slidesToShow && currentSlide < (index + 1) * slidesToShow
                   ? "bg-indigo-600 w-6"
-                  : "bg-gray-300 hover:bg-gray-400"
+                  : "bg-gray-300"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />

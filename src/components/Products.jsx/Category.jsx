@@ -157,7 +157,7 @@ export default function MedicalShowcase() {
                     src={`${medicalCategories[activeIndex].image}?w=1200&auto=format&fit=crop`}
                     alt={medicalCategories[activeIndex].name}
                     className="w-full h-64 sm:h-80 md:h-full object-cover"
-                    loading="lazy"
+                
                   />
                   <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 text-white">
                     <motion.h3 
