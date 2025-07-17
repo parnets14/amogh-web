@@ -21,7 +21,7 @@ import Cart from "./components/Cart/CartItem";
 import About from "./pages/about";
 import AllMedicalProduct from "./pages/allProduct";
 import ProductCategorySection from "./components/Products.jsx/Category";
-import ContactPage from "./components/contect";
+import ContactPage from "./pages/contact";
 
 // Admin Pages
 
@@ -41,7 +41,7 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="allproduct" element={<AllMedicalProduct />} />
         <Route path="categories" element={<ProductCategorySection />} />
-        <Route path="contect" element={<ContactPage />} />
+        <Route path="contact" element={<ContactPage />} />
       </Route>
 
       {/* Admin Routes */}

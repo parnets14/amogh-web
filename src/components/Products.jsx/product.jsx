@@ -86,7 +86,7 @@ export default function MedicalProductCarousel() {
   }, [slidesToShow]);
 
   return (
-    <div className="w-full py-8 px-4 sm:px-6 lg:px-8 relative bg-gray-50 ">
+    <div className="w-full py-8  px-4 sm:px-6 lg:px-8 relative bg-gray-50 ">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div className="text-center sm:text-left">
@@ -97,7 +97,7 @@ export default function MedicalProductCarousel() {
           </div>
           <Link
             to="/allproduct"
-            className="hidden sm:flex items-center justify-center py-2 px-4 border border-indigo-500 text-[#01A4D5] hover:bg-indigo-50 rounded-md text-sm font-medium transition-all duration-200 hover:shadow-sm"
+            className=" sm:flex items-center justify-center py-2 px-4 border border-[#01A4D5] text-[#01A4D5] hover:bg-indigo-50 rounded-md text-sm font-medium transition-all duration-200 hover:shadow-sm"
             aria-label="View all products"
           >
             View All
@@ -136,7 +136,7 @@ export default function MedicalProductCarousel() {
                 className="flex-shrink-0 px-1 sm:px-2"
                 style={{ width: `${100 / slidesToShow}%` }}
               >
-                <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative group overflow-hidden">
+                <div className="bg-white rounded-lg  hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative group overflow-hidden">
                   {/* Product Badges */}
                   <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1">
                     {product.isNew && (
@@ -265,7 +265,7 @@ export default function MedicalProductCarousel() {
                                 ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                                 : product.stock === 0
                                   ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
-                                  : "bg-[#01A4D5] hover:bg-indigo-600 text-white hover:shadow-sm"
+                                  : "bg-[#01A4D5] hover:bg-[#01A4D5] text-white hover:shadow-sm"
                           }`}
                           aria-label={
                             addedItems[product.id]
@@ -293,7 +293,7 @@ export default function MedicalProductCarousel() {
                         </button>
                         <Link
                           to={`/products/${product.slug}`}
-                          className="flex items-center justify-center py-1.5 sm:py-2 px-1.5 sm:px-3 border border-[#01A4D5] text-[#01A4D5] hover:bg-indigo-50 rounded-md text-[0.65rem] sm:text-xs font-medium transition-all duration-200 hover:shadow-sm"
+                          className="flex items-center justify-center py-1.5 sm:py-2 px-1.5 sm:px-3 border border-[#01A4D5] text-[#01A4D5]  rounded-md text-[0.65rem] sm:text-xs font-medium transition-all duration-200 hover:shadow-sm"
                           aria-label={`View details for ${product.name}`}
                         >
                           <Info size={14} className="mr-0.5 sm:mr-1" /> Details
@@ -310,7 +310,7 @@ export default function MedicalProductCarousel() {
        
 
         {/* View All Button for Mobile */}
-        <div className="sm:hidden mt-4 text-center">
+        {/* <div className="sm:hidden mt-4 text-center">
           <Link
             to="/allproduct"
             className="flex items-center justify-center py-1.5 px-3 border border-[#01A4D5] text-[#01A4D5] hover:bg-indigo-50 rounded-md text-[0.65rem] font-medium transition-all duration-200 hover:shadow-sm"
@@ -318,7 +318,7 @@ export default function MedicalProductCarousel() {
           >
             View All
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -87,7 +87,7 @@ export default function Header() {
                 about Us
               </NavLink>
               <NavLink 
-                to="/contect" 
+                to="/contact" 
                 className={({isActive}) => 
                   `py-2 px-1 font-medium transition-colors ${isActive ? 'text-[#01A4D5] border-b-2 border-[#01A4D5]' : 'text-gray-700 hover:text-[#01A4D5]'}`
                 }
@@ -196,7 +196,7 @@ export default function Header() {
                 product
               </NavLink>
               <NavLink 
-                to="/contect" 
+                to="/contact" 
                 onClick={() => setIsMenuOpen(false)}
                 className={({isActive}) => 
                   `py-2 px-3 rounded-lg font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
@@ -25,6 +26,14 @@ const testimonials = [
     avatar: "/avatars/priya.jpg",
     rating: 5,
   },
+  {
+    id: 4,
+    name: "Rahul Mehta",
+    role: "Caregiver",
+    feedback: "Excellent customer service and fast prescription processing. Very convenient platform.",
+    avatar: "/avatars/rahul.jpg",
+    rating: 4,
+  },
 ];
 
 const StarRating = ({ rating }) => {
@@ -33,7 +42,7 @@ const StarRating = ({ rating }) => {
       {[...Array(5)].map((_, i) => (
         <svg
           key={i}
-          className={`w-5 h-5 ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+          className={`w-4 h-4 ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -45,52 +54,105 @@ const StarRating = ({ rating }) => {
 };
 
 export default function Testimonials() {
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const nextTestimonial = () => {
+    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevTestimonial = () => {
+    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  };
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-50">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Trusted by Customers & Professionals</h2>
+          <h2 className="text-3xl font-bold text-[#01A4D5] mb-4">Trusted by Customers & Professionals</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Don't just take our word for it. Here's what our community has to say about their experiences.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-          {testimonials.map((testimonial, index) => (
+        {/* Mobile/Tablet Carousel */}
+        <div className="lg:hidden relative">
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-300 ease-in-out"
+              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+            >
+              {testimonials.map((testimonial) => (
+                <div 
+                  key={testimonial.id}
+                  className="w-full flex-shrink-0 px-2"
+                >
+                  <div className="bg-white p-6 rounded-xl shadow-md h-full">
+                    <StarRating rating={testimonial.rating} />
+                    <blockquote className="mt-3 text-gray-600 text-sm italic">
+                      "{testimonial.feedback}"
+                    </blockquote>
+                    <div className="mt-4 flex items-center">
+                      <img 
+                        src={testimonial.avatar} 
+                        alt={testimonial.name} 
+                        className="w-10 h-10 rounded-full object-cover border-2 border-[#01A4D5]"
+                      />
+                      <div className="ml-3">
+                        <p className="font-medium text-gray-900 text-sm">{testimonial.name}</p>
+                        <p className="text-xs text-[#01A4D5]">{testimonial.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <button
+            onClick={prevTestimonial}
+            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
+          >
+            <ChevronLeft className="w-5 h-5 text-[#01A4D5]" />
+          </button>
+          <button
+            onClick={nextTestimonial}
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10"
+          >
+            <ChevronRight className="w-5 h-5 text-[#01A4D5]" />
+          </button>
+          <div className="flex justify-center mt-4 space-x-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                className={`w-2 h-2 rounded-full ${activeIndex === index ? 'bg-[#01A4D5]' : 'bg-gray-300'}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Grid */}
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {testimonials.map((testimonial) => (
             <div 
               key={testimonial.id}
-              className={`bg-white p-8 rounded-xl shadow-lg transition-all duration-300 ${activeTestimonial === index ? 'ring-2 ring-indigo-500 scale-105' : 'opacity-90 hover:opacity-100'}`}
-              onMouseEnter={() => setActiveTestimonial(index)}
+              className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col"
             >
               <StarRating rating={testimonial.rating} />
-              <blockquote className="mt-4 text-gray-600 italic">
+              <blockquote className="mt-3 text-gray-600 text-sm italic flex-grow">
                 "{testimonial.feedback}"
               </blockquote>
-              <div className="mt-6 flex items-center">
+              <div className="mt-4 flex items-center">
                 <img 
                   src={testimonial.avatar} 
                   alt={testimonial.name} 
-                  className="w-12 h-12 rounded-full object-cover border-2 border-indigo-100"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-[#01A4D5]"
                 />
-                <div className="ml-4">
-                  <p className="font-medium text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-indigo-600">{testimonial.role}</p>
+                <div className="ml-3">
+                  <p className="font-medium text-gray-900 text-sm">{testimonial.name}</p>
+                  <p className="text-xs text-[#01A4D5]">{testimonial.role}</p>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="flex justify-center space-x-2">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveTestimonial(index)}
-              className={`w-3 h-3 rounded-full transition-colors ${activeTestimonial === index ? 'bg-indigo-600' : 'bg-gray-300'}`}
-              aria-label={`View testimonial ${index + 1}`}
-            />
           ))}
         </div>
       </div>

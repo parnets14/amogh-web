@@ -1,7 +1,12 @@
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 
 const ContactPage = () => {
+
+    useEffect(()=>{
+       window.scrollTo(0,0)   
+    },[])
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission logic here
