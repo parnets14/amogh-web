@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Check, Heart, Zap, Info, Search, Filter, ArrowLeft } from "lucide-react";
 import { medicalProducts } from "../components/Products.jsx/productData";
@@ -14,6 +14,11 @@ export default function AllProducts() {
 
   // Get unique categories for filter
   const categories = ["all", ...new Set(medicalProducts.map(product => product.category))];
+
+useEffect(()=>{
+    window.scrollTo(0,0)
+},[])
+
 
   const addToCart = (productId) => {
     if (!cart.includes(productId)) {
@@ -46,13 +51,15 @@ export default function AllProducts() {
   return (
     <div className="w-full py-10 px-4 sm:px-6 lg:px-8">
       {/* Back Button */}
+      <div>
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center text-indigo-600 hover:text-indigo-800 mb-6 transition-colors duration-200"
+        className="flex items-center text-[#01A4D5] hover:text-[#01A4D5] cursor-pointer mb-6 transition-colors duration-200"
       >
         <ArrowLeft className="w-5 h-5 mr-1" />
         Back
       </button>
+      </div>
 
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">All Products</h2>
@@ -248,7 +255,7 @@ export default function AllProducts() {
                             ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                             : product.stock === 0
                               ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
-                              : "bg-indigo-500 hover:bg-indigo-600 text-white hover:shadow-sm"
+                              : "bg-[#01A4D5] hover:bg-[#01A4e9] cursor-pointer  text-white hover:shadow-sm"
                       }`}
                     >
                       {addedItems[product.id] ? (
@@ -267,7 +274,7 @@ export default function AllProducts() {
                     </button>
                     <Link
                       to={`/products/${product.slug}`}
-                      className="flex items-center justify-center py-2 px-3 border border-indigo-500 text-indigo-500 hover:bg-indigo-50 rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
+                      className="flex items-center justify-center py-2 px-3 border border-[#01A4D5] text-[#01A4D5]  rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
                     >
                       <Info size={16} className="mr-1" /> Details
                     </Link>

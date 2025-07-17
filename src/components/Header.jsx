@@ -176,15 +176,7 @@ export default function Header() {
               >
                 Home
               </NavLink>
-              <NavLink 
-                to="/shop" 
-                onClick={() => setIsMenuOpen(false)}
-                className={({isActive}) => 
-                  `py-2 px-3 rounded-lg font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`
-                }
-              >
-                Shop
-              </NavLink>
+              
               <NavLink 
                 to="/categories" 
                 onClick={() => setIsMenuOpen(false)}
@@ -195,13 +187,31 @@ export default function Header() {
                 Categories
               </NavLink>
               <NavLink 
-                to="/deals" 
+                to="/allproduct" 
                 onClick={() => setIsMenuOpen(false)}
                 className={({isActive}) => 
                   `py-2 px-3 rounded-lg font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`
                 }
               >
-                Hot Deals
+                product
+              </NavLink>
+              <NavLink 
+                to="/contect" 
+                onClick={() => setIsMenuOpen(false)}
+                className={({isActive}) => 
+                  `py-2 px-3 rounded-lg font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`
+                }
+              >
+                contect
+              </NavLink>
+              <NavLink 
+                to="/about" 
+                onClick={() => setIsMenuOpen(false)}
+                className={({isActive}) => 
+                  `py-2 px-3 rounded-lg font-medium ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-50'}`
+                }
+              >
+                about
               </NavLink>
               <NavLink 
                 to="/account" 

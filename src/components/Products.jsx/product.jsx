@@ -10,29 +10,23 @@ export default function MedicalProductCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  const [slidesToShow, setSlidesToShow] = useState(2); // Default to 2 for mobile
+  const [slidesToShow, setSlidesToShow] = useState(2); // Default to 2 for all responsive sizes
 
   // Responsive slides calculation
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setSlidesToShow(4); // lg screens show 4
-      } else if (window.innerWidth >= 768) {
-        setSlidesToShow(3); // md screens show 3
+      if (window.innerWidth >= 1280) {
+        setSlidesToShow(4); // xl screens show 4
+      } else if (window.innerWidth >= 1024) {
+        setSlidesToShow(3); // lg screens show 3
       } else {
-        setSlidesToShow(2); // default show 2
+        setSlidesToShow(2); // sm and smaller screens show 2
       }
-      // Reset to first slide when screen size changes to prevent empty space
       setCurrentSlide(0);
     };
 
-    // Set initial value
     handleResize();
-    
-    // Add event listener
     window.addEventListener('resize', handleResize);
-    
-    // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -78,7 +72,6 @@ export default function MedicalProductCarousel() {
     if (touchStart - touchEnd > 100) {
       nextSlide();
     }
-
     if (touchStart - touchEnd < -100) {
       prevSlide();
     }
@@ -93,27 +86,40 @@ export default function MedicalProductCarousel() {
   }, [slidesToShow]);
 
   return (
-    <div className="w-full py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="w-full py-8 px-4 sm:px-6 lg:px-8 relative bg-gray-50 ">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">Latest Projects</h2>
-        <p className="text-gray-600 text-center mb-8">Explore our newest medical equipment solutions</p>
+        <div className="flex justify-between items-center mb-6">
+          <div className="text-center sm:text-left">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#01A4D5]">Latest Products</h2>
+            <p className="text-gray-600 text-sm sm:text-base mt-1 hidden sm:block">
+              Explore our newest medical equipment solutions
+            </p>
+          </div>
+          <Link
+            to="/allproduct"
+            className="hidden sm:flex items-center justify-center py-2 px-4 border border-indigo-500 text-[#01A4D5] hover:bg-indigo-50 rounded-md text-sm font-medium transition-all duration-200 hover:shadow-sm"
+            aria-label="View all products"
+          >
+            View All
+          </Link>
+        </div>
         
         <div className="relative overflow-hidden">
           {/* Navigation Arrows */}
           <button 
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 ml-2"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 sm:ml-2"
             aria-label="Previous products"
           >
-            <ChevronLeft size={24} className="text-indigo-600" />
+            <ChevronLeft size={20} className="text-indigo-600" />
           </button>
           
           <button 
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 mr-2"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all duration-200 sm:mr-2"
             aria-label="Next products"
           >
-            <ChevronRight size={24} className="text-indigo-600" />
+            <ChevronRight size={20} className="text-indigo-600" />
           </button>
 
           {/* Carousel Container */}
@@ -127,19 +133,19 @@ export default function MedicalProductCarousel() {
             {medicalProducts.map((product) => (
               <div 
                 key={product.id}
-                className="flex-shrink-0 px-2"
+                className="flex-shrink-0 px-1 sm:px-2"
                 style={{ width: `${100 / slidesToShow}%` }}
               >
                 <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative group overflow-hidden">
                   {/* Product Badges */}
-                  <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1.5">
+                  <div className="absolute top-2 left-2 z-10 flex flex-col space-y-1">
                     {product.isNew && (
-                      <span className="bg-indigo-500 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
+                      <span className="bg-indigo-500 text-white text-xs font-medium px-1.5 py-0.5 rounded-full shadow-sm">
                         NEW
                       </span>
                     )}
                     {product.isFeatured && (
-                      <span className="bg-amber-400 text-white text-xs font-medium px-2 py-0.5 rounded-full shadow-sm">
+                      <span className="bg-amber-400 text-white text-xs font-medium px-1.5 py-0.5 rounded-full shadow-sm">
                         FEATURED
                       </span>
                     )}
@@ -148,7 +154,7 @@ export default function MedicalProductCarousel() {
                   {/* Wishlist Button */}
                   <button
                     onClick={() => toggleWishlist(product.id)}
-                    className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all duration-200 ${
+                    className={`absolute top-2 right-2 z-10 p-1 rounded-full transition-all duration-200 ${
                       wishlist.includes(product.id)
                         ? "text-red-500 bg-white shadow-md animate-pulse"
                         : "text-gray-400 bg-white/80 hover:bg-white hover:text-red-500"
@@ -156,13 +162,13 @@ export default function MedicalProductCarousel() {
                     aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
                   >
                     <Heart
-                      size={18}
+                      size={16}
                       fill={wishlist.includes(product.id) ? "currentColor" : "none"}
                     />
                   </button>
 
                   {/* Product Image */}
-                  <div className="relative h-48 bg-gray-50 p-3 flex items-center justify-center">
+                  <div className="relative h-40 sm:h-48 bg-gray-50 p-2 sm:p-3 flex items-center justify-center">
                     <img
                       src={product.image}
                       alt={product.name}
@@ -173,10 +179,10 @@ export default function MedicalProductCarousel() {
                   </div>
 
                   {/* Product Body */}
-                  <div className="p-4 flex-grow flex flex-col">
+                  <div className="p-3 sm:p-4 flex-grow flex flex-col">
                     {/* Category */}
                     <span
-                      className={`text-xs font-semibold mb-1.5 tracking-wide ${
+                      className={`text-xs font-semibold mb-1 tracking-wide ${
                         product.category === "Clinical Chemistry"
                           ? "text-indigo-500"
                           : product.category === "Hematology"
@@ -188,7 +194,7 @@ export default function MedicalProductCarousel() {
                     </span>
 
                     {/* Product Name */}
-                    <h3 className="font-semibold text-base mb-2 line-clamp-2 min-h-[2.5rem]">
+                    <h3 className="font-semibold text-sm sm:text-base mb-2 line-clamp-2 min-h-[2.5rem]">
                       <Link
                         to={`/products/${product.slug}`}
                         className="hover:text-indigo-500 transition-colors duration-200"
@@ -198,23 +204,23 @@ export default function MedicalProductCarousel() {
                     </h3>
 
                     {/* Key Specs */}
-                    <div className="mb-3 space-y-1.5 text-xs text-gray-600">
+                    <div className="mb-2 sm:mb-3 space-y-1 text-xs sm:text-sm text-gray-600 hidden sm:block">
                       <div className="flex items-start">
-                        <Zap className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
+                        <Zap className="w-3.5 h-3.5 mt-0.5 mr-1.5 text-gray-400 flex-shrink-0" />
                         <div>
                           <strong className="text-gray-700">Technology: </strong>
                           <span>{product.technology}</span>
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <Zap className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
+                        <Zap className="w-3.5 h-3.5 mt-0.5 mr-1.5 text-gray-400 flex-shrink-0" />
                         <div>
                           <strong className="text-gray-700">Throughput: </strong>
                           <span>{product.throughput}</span>
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <Info className="w-3.5 h-3.5 mt-0.5 mr-2 text-gray-400 flex-shrink-0" />
+                        <Info className="w-3.5 h-3.5 mt-0.5 mr-1.5 text-gray-400 flex-shrink-0" />
                         <div>
                           <strong className="text-gray-700">Sample: </strong>
                           <span>{product.sampleType}</span>
@@ -223,16 +229,16 @@ export default function MedicalProductCarousel() {
                     </div>
 
                     {/* Price & CTA */}
-                    <div className="mt-auto pt-3 border-t border-gray-100">
-                      <div className="flex justify-between items-center mb-3">
+                    <div className="mt-auto pt-2 sm:pt-3 border-t border-gray-100">
+                      <div className="flex justify-between items-center mb-2 sm:mb-3">
                         <div>
-                          <p className="text-xs text-gray-500">Starting at</p>
-                          <p className="text-base font-semibold text-indigo-600">
+                          <p className="text-xs text-gray-500 hidden sm:block">Starting at</p>
+                          <p className="text-sm sm:text-base font-semibold text-indigo-600">
                             ${product.price.toLocaleString()}
                           </p>
                         </div>
                         <span
-                          className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                          className={`text-xs font-medium px-1.5 sm:px-2 py-0.5 rounded-full ${
                             product.stock > 3
                               ? "bg-green-100 text-green-700"
                               : product.stock > 0
@@ -248,18 +254,18 @@ export default function MedicalProductCarousel() {
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-2 gap-1 sm:gap-2">
                         <button
                           onClick={() => addToCart(product.id)}
                           disabled={product.stock === 0 || cart.includes(product.id)}
-                          className={`flex items-center justify-center py-2 px-3 rounded-md text-xs font-medium transition-all duration-200 ${
+                          className={`flex items-center justify-center py-1.5 sm:py-2 px-1.5 sm:px-3 rounded-md text-[0.65rem] sm:text-xs font-medium transition-all duration-200 ${
                             addedItems[product.id]
                               ? "bg-green-100 text-green-700 border border-green-200"
                               : cart.includes(product.id)
                                 ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                                 : product.stock === 0
                                   ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
-                                  : "bg-indigo-500 hover:bg-indigo-600 text-white hover:shadow-sm"
+                                  : "bg-[#01A4D5] hover:bg-indigo-600 text-white hover:shadow-sm"
                           }`}
                           aria-label={
                             addedItems[product.id]
@@ -273,7 +279,7 @@ export default function MedicalProductCarousel() {
                         >
                           {addedItems[product.id] ? (
                             <>
-                              <Check size={16} className="mr-1" /> Added
+                              <Check size={14} className="mr-0.5 sm:mr-1" /> Added
                             </>
                           ) : cart.includes(product.id) ? (
                             "In Cart"
@@ -281,16 +287,16 @@ export default function MedicalProductCarousel() {
                             "Sold Out"
                           ) : (
                             <>
-                              <ShoppingCart size={16} className="mr-1" /> Add to Cart
+                              <ShoppingCart size={14} className="mr-0.5 sm:mr-1" /> Add
                             </>
                           )}
                         </button>
                         <Link
                           to={`/products/${product.slug}`}
-                          className="flex items-center justify-center py-2 px-3 border border-indigo-500 text-indigo-500 hover:bg-indigo-50 rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
+                          className="flex items-center justify-center py-1.5 sm:py-2 px-1.5 sm:px-3 border border-[#01A4D5] text-[#01A4D5] hover:bg-indigo-50 rounded-md text-[0.65rem] sm:text-xs font-medium transition-all duration-200 hover:shadow-sm"
                           aria-label={`View details for ${product.name}`}
                         >
-                          <Info size={16} className="mr-1" /> Details
+                          <Info size={14} className="mr-0.5 sm:mr-1" /> Details
                         </Link>
                       </div>
                     </div>
@@ -301,20 +307,17 @@ export default function MedicalProductCarousel() {
           </div>
         </div>
 
-        {/* Pagination Indicators */}
-        <div className="flex justify-center mt-6 space-x-2">
-          {Array.from({ length: Math.ceil(medicalProducts.length / slidesToShow) }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index * slidesToShow)}
-              className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                currentSlide >= index * slidesToShow && currentSlide < (index + 1) * slidesToShow
-                  ? "bg-indigo-600 w-6"
-                  : "bg-gray-300"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
+       
+
+        {/* View All Button for Mobile */}
+        <div className="sm:hidden mt-4 text-center">
+          <Link
+            to="/allproduct"
+            className="flex items-center justify-center py-1.5 px-3 border border-[#01A4D5] text-[#01A4D5] hover:bg-indigo-50 rounded-md text-[0.65rem] font-medium transition-all duration-200 hover:shadow-sm"
+            aria-label="View all products"
+          >
+            View All
+          </Link>
         </div>
       </div>
     </div>
