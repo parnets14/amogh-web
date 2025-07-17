@@ -38,7 +38,7 @@ export default function Footer() {
               <img 
                 src="Amg logo.jpeg" 
                 alt="AMG Logo" 
-                className="h-14 w-auto mr-4 transition-transform duration-300 group-hover:scale-105" 
+                className="h-14 w-auto mr-4 transition-transform bg-transparant duration-300 group-hover:scale-105" 
               />
               <span className="text-3xl font-bold text-white tracking-tight">AMG</span>
             </div>

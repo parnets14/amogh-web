@@ -14,6 +14,11 @@ import {
   Lock
 } from 'lucide-react';
 
+// Define our custom colors
+const primaryColor = '#01A4D5';
+const primaryHoverColor = '#0188b3';
+const errorColor = '#ef4444';
+
 // Reusable Text Input Component
 const TextInput = ({ 
   label, 
@@ -44,7 +49,7 @@ const TextInput = ({
         maxLength={maxLength}
         className={`w-full rounded-lg border ${
           error ? 'border-red-500' : 'border-gray-300'
-        } focus:border-blue-500 focus:ring-2 focus:ring-blue-200 px-3 py-2 ${
+        } focus:border-[${primaryColor}] focus:ring-2 focus:ring-[${primaryColor}20] px-3 py-2 ${
           Icon ? 'pl-10' : 'pl-3'
         } transition-colors`}
         required={required}
@@ -80,7 +85,7 @@ const SelectInput = ({
       onChange={onChange}
       className={`w-full rounded-lg border ${
         error ? 'border-red-500' : 'border-gray-300'
-      } focus:border-blue-500 focus:ring-2 focus:ring-blue-200 px-3 py-2 appearance-none bg-white`}
+      } focus:border-[${primaryColor}] focus:ring-2 focus:ring-[${primaryColor}20] px-3 py-2 appearance-none bg-white`}
       required={required}
       aria-invalid={!!error}
       aria-describedby={error ? `${name}-error` : undefined}
@@ -273,18 +278,18 @@ export default function CheckoutPage() {
       <div className="">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-8 group"
+          className="flex items-center cursor-pointer text-[#01A4D5] text-[${primaryColor}] hover:text-[${primaryHoverColor}] transition-colors mb-8 group"
         >
-          <ArrowLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft className="w-5 h-5 mr-1  group-hover:-translate-x-1 transition-transform" />
           Back to product
         </button>
 
         <div className="flex items-center mb-2">
-          <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold mr-3">1</div>
-          <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
+          <div className="w-8 h-8 rounded-full bg-[${primaryColor}] bg-[#01A4D5] flex items-center justify-center text-white font-bold mr-3">1</div>
+          <h1 className="text-3xl font-bold cursor-pointer text-[#01A4D5]">Checkout</h1>
         </div>
 
-        <div className="border-l-2 border-blue-600 pl-10 mb-10 ml-4">
+        <div className="border-l-2 border-[${primaryColor}] pl-10 mb-10 ml-4">
           <p className="text-gray-600">Complete your purchase with secure checkout</p>
         </div>
       </div>
@@ -295,8 +300,8 @@ export default function CheckoutPage() {
           {/* Shipping Information */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                <MapPin className="w-4 h-4 text-blue-600" />
+              <div className="w-8 h-8 rounded-full bg-[${primaryColor}20] flex items-center justify-center mr-4">
+                <MapPin className="w-4 h-4 text-[${primaryColor}]" />
               </div>
               <h2 className="text-xl font-semibold text-gray-900">Shipping Information</h2>
             </div>
@@ -380,8 +385,8 @@ export default function CheckoutPage() {
           {/* Payment Options */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             <div className="flex items-center mb-6">
-              <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-4">
-                <CreditCard className="w-4 h-4 text-blue-600" />
+              <div className="w-8 h-8 rounded-full bg-[${primaryColor}20] flex items-center justify-center mr-4">
+                <CreditCard className="w-4 h-4 text-[${primaryColor}]" />
               </div>
               <h2 className="text-xl font-semibold text-gray-900">Payment Method</h2>
             </div>
@@ -390,14 +395,14 @@ export default function CheckoutPage() {
               <div 
                 className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${
                   paymentMethod === 'credit-card' 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-blue-300'
+                    ? `border-[${primaryColor}] bg-[${primaryColor}10]` 
+                    : 'border-gray-200 hover:border-[${primaryColor}50]'
                 }`}
                 onClick={() => setPaymentMethod('credit-card')}
               >
                 <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-4">
-                    <CreditCard className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 rounded-lg bg-[${primaryColor}20] flex items-center justify-center mr-4">
+                    <CreditCard className="w-5 h-5 text-[${primaryColor}]" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-medium text-gray-900">Credit/Debit Card</h3>
@@ -406,7 +411,7 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                   {paymentMethod === 'credit-card' && (
-                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-[${primaryColor}] flex items-center justify-center">
                       <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -466,14 +471,14 @@ export default function CheckoutPage() {
               <div 
                 className={`p-6 border-2 rounded-xl cursor-pointer transition-all ${
                   paymentMethod === 'bank-transfer' 
-                    ? 'border-blue-500 bg-blue-50' 
-                    : 'border-gray-200 hover:border-blue-300'
+                    ? `border-[${primaryColor}] bg-[${primaryColor}10]` 
+                    : 'border-gray-200 hover:border-[${primaryColor}50]'
                 }`}
                 onClick={() => setPaymentMethod('bank-transfer')}
               >
                 <div className="flex items-center">
-                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center mr-4">
-                    <Banknote className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 rounded-lg bg-[${primaryColor}20] flex items-center justify-center mr-4">
+                    <Banknote className="w-5 h-5 text-[${primaryColor}]" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-medium text-gray-900">Bank Transfer</h3>
@@ -482,7 +487,7 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                   {paymentMethod === 'bank-transfer' && (
-                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full bg-[${primaryColor}] flex items-center justify-center">
                       <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -535,8 +540,8 @@ export default function CheckoutPage() {
             </div>
 
             <div className="space-y-4 mb-8">
-              <div className="flex items-start p-4 bg-blue-50 rounded-lg">
-                <Truck className="w-5 h-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
+              <div className="flex items-start p-4 bg-[${primaryColor}10] rounded-lg">
+                <Truck className="w-5 h-5 text-[${primaryColor}] mt-0.5 mr-3 flex-shrink-0" />
                 <div>
                   <h3 className="font-medium text-gray-900">Free Shipping</h3>
                   <p className="text-sm text-gray-600">
@@ -558,8 +563,8 @@ export default function CheckoutPage() {
               disabled={isProcessing}
               className={`w-full py-4 px-6 rounded-xl font-medium flex items-center justify-center ${
                 isProcessing 
-                  ? 'bg-blue-400 cursor-not-allowed' 
-                  : 'bg-blue-600 hover:bg-blue-700 shadow-md hover:shadow-lg'
+                  ? 'bg-[${primaryColor}70] cursor-not-allowed' 
+                  : `bg-[${primaryColor}] hover:bg-[${primaryHoverColor}] shadow-md hover:shadow-lg`
               } text-white transition-all duration-300`}
             >
               {isProcessing ? (
@@ -580,8 +585,8 @@ export default function CheckoutPage() {
 
             <p className="text-xs text-gray-500 mt-6 text-center">
               By placing your order, you agree to our{' '}
-              <a href="#" className="text-blue-600 hover:underline font-medium">Terms of Service</a> and{' '}
-              <a href="#" className="text-blue-600 hover:underline font-medium">Privacy Policy</a>.
+              <a href="#" className="text-[${primaryColor}] hover:underline font-medium">Terms of Service</a> and{' '}
+              <a href="#" className="text-[${primaryColor}] hover:underline font-medium">Privacy Policy</a>.
             </p>
           </div>
         </div>
