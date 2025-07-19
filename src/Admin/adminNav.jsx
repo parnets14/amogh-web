@@ -20,6 +20,7 @@ const adminNav = [
   { name: "Orders", path: "/admin/orders", icon: FiShoppingCart },
   { name: "Customers", path: "/admin/customers", icon: FiUsers },
   { name: "Inventory", path: "/admin/inventory", icon: FiPackage },
+  { name: "Banner", path: "/admin/banner", icon: FiPackage },
 
 
   

@@ -26,6 +26,7 @@ import AddProducts from "./Admin/ManageProducts";
 import Orders from "./Admin/Orders";
 import Inventory from "./Admin/Inventory";
 import Settings from "./Admin/setting";
+import Banner from "./Admin/Banner";
 
 // Admin Pages
 
@@ -57,6 +58,7 @@ function App() {
         <Route path="orders" element={<Orders />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="settings" element={<Settings />} />
+        <Route  path="banner" element={<Banner/>}/>
 
      
       </Route>
