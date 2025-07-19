@@ -7,29 +7,35 @@ export default function AdminHeader({ toggleSidebar }) {
   const [adminName, setAdminName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // Get admin info from localStorage or API
+  // Fetch admin name from localStorage
   useEffect(() => {
-    // You can get this from localStorage, API, or context
-    const adminToken = localStorage.getItem("adminToken");
-    if (adminToken) {
-      // Mock admin name - replace with actual API call or token parsing
-      setAdminName("Admin User"); // Replace with actual admin name
+    const token = localStorage.getItem("adminToken");
+    const name = localStorage.getItem("adminName");
+    if (token && name) {
+      setAdminName(name);
     }
   }, []);
 
+  // Get initials for avatar
   const getInitials = (name) => {
     if (!name) return "A";
-    return name.split(" ").map(word => word[0]).join("").toUpperCase();
+    return name
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase();
   };
 
+  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminName");
     navigate("/admin/login");
   };
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm px-4 sm:px-6 py-3 flex justify-between items-center sticky top-0 z-30">
-      {/* Left side - Mobile menu button and Logo */}
+      {/* Left - Logo and menu */}
       <div className="flex items-center space-x-4">
         <button
           onClick={toggleSidebar}
@@ -37,25 +43,24 @@ export default function AdminHeader({ toggleSidebar }) {
         >
           <Menu size={20} />
         </button>
-        
+
         <div className="flex items-center space-x-3">
           <img
             src="/Amg logo.jpeg"
             alt="Amogh Logo"
-            className="h-8 w-8  object-cover  border-gray-200 md:hidden"
+            className="h-8 w-8 object-cover border-gray-200 md:hidden"
           />
           <h1 className="text-xl font-bold text-gray-800 md:hidden">Amogh</h1>
         </div>
       </div>
 
-      {/* Right side - Admin Profile */}
+      {/* Right - Admin info */}
       <div className="relative">
         <div className="flex items-center space-x-3">
           <span className="hidden sm:inline text-sm text-gray-600 font-medium">
-            Welcome, Admin
+            Welcome, {adminName?.split(" ")[0] || "Admin"}
           </span>
-          
-          {/* Profile Avatar */}
+
           <div
             className="relative cursor-pointer"
             onClick={() => setShowDropdown(!showDropdown)}
@@ -69,14 +74,14 @@ export default function AdminHeader({ toggleSidebar }) {
           </div>
         </div>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown */}
         {showDropdown && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
             <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
-              <div className="font-medium">Admin User</div>
+              <div className="font-medium">{adminName}</div>
               <div className="text-gray-500">admin@amogh.com</div>
             </div>
-            
+
             <button
               onClick={() => {
                 setShowDropdown(false);
@@ -87,7 +92,7 @@ export default function AdminHeader({ toggleSidebar }) {
               <User size={16} />
               <span>Profile</span>
             </button>
-            
+
             <button
               onClick={() => {
                 setShowDropdown(false);

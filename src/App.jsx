@@ -26,6 +26,7 @@ import AddProducts from "./Admin/ManageProducts";
 import Orders from "./Admin/Orders";
 import Inventory from "./Admin/Inventory";
 import Settings from "./Admin/setting";
+import AdminRegister from "./Admin/register";
 
 // Admin Pages
 
@@ -49,8 +50,10 @@ function App() {
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
+         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/register" element={<AdminRegister />} />
       <Route path="/admin" element={<AdminLayout />}>
+   
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="products" element={<ManageProducts />} />
         <Route path="categories" element={<ManageCategories />} />
