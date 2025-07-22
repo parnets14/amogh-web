@@ -26,7 +26,21 @@ import AddProducts from "./Admin/ManageProducts";
 import Orders from "./Admin/Orders";
 import Inventory from "./Admin/Inventory";
 import Settings from "./Admin/setting";
-import Banner from "./Admin/Banner";
+import AdminRegister from "./Admin/register";
+import BannerPage from "./Admin/Banner";
+import FeaturesAdmin from "./Admin/FeaturesAdmin";
+import OfferBannerPage from "./Admin/OfferBannerPage";
+import TestimonialsPage from "./Admin/TestimonialsPage";
+import ContactInformationAdmin from "./Admin/ContactInformationAdmin";
+import SendMessageAdminView from "./Admin/SendMessageAdminView";
+import OurLocationAdmin from "./Admin/OurLocationAdmin";
+import MapEmbedAdmin from "./Admin/OurLocationAdmin";
+import AdminMission from "./Admin/AdminMission";
+import AdminCoreValues from "./Admin/AdminCoreValues";
+import AdminLeaders from "./Admin/AdminLeaders";
+import AdminAbout from "./Admin/AdminAbout";
+;
+
 
 // Admin Pages
 
@@ -37,7 +51,7 @@ function App() {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="products" element={<Products />} />
-        <Route path="products/:slug" element={<ProductDetail />} />
+        <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
@@ -46,20 +60,33 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="allproduct" element={<AllMedicalProduct />} />
         <Route path="categories" element={<ProductCategorySection />} />
+         <Route path="/allproducts/*" element={<AllMedicalProduct />} />
         <Route path="contact" element={<ContactPage />} />
       </Route>
 
       {/* Admin Routes */}
-      <Route path="/admin/login" element={<AdminLogin />} />
+         <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/register" element={<AdminRegister />} />
       <Route path="/admin" element={<AdminLayout />}>
+   
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="products" element={<ManageProducts />} />
         <Route path="categories" element={<ManageCategories />} />
         <Route path="orders" element={<Orders />} />
         <Route path="inventory" element={<Inventory />} />
         <Route path="settings" element={<Settings />} />
-        <Route  path="banner" element={<Banner/>}/>
-
+        <Route  path="banner" element={<BannerPage/>}/>
+        <Route  path="features" element={<FeaturesAdmin/>}/>
+        <Route  path="offerBanner" element={<OfferBannerPage/>}/>
+        <Route  path="testimonials" element={<TestimonialsPage/>}/>
+        <Route  path="contactInformation" element={<ContactInformationAdmin/>}/>
+        <Route  path="sendMessage" element={<SendMessageAdminView/>}/>
+        <Route  path="location" element={<MapEmbedAdmin/>}/>
+        <Route  path="mission" element={<AdminMission/>}/>
+        <Route  path="coreValues" element={<AdminCoreValues/>}/>
+        <Route  path="leaders" element={<AdminLeaders/>}/>
+        <Route  path="about" element={<AdminAbout/>}/>
+        
      
       </Route>
     </Routes>

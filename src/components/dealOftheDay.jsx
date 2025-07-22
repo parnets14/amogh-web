@@ -1,30 +1,46 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
 const OfferBanner = () => {
+
+  const [offerBanners,setOfferBanners]=useState([])
+
+const fetchAllOfferBanners = async () => {
+  try {
+    const res = await axios.get("http://localhost:5010/api/offer-banners");
+    setOfferBanners(res.data);
+   
+  } catch (error) {
+    console.error("Failed to fetch offer banners:", error);
+  }
+};
+
+
+
   const offers = [
     {
-      title: 'Flash Sale: 50% Off Everything!',
-      description: 'Shop now and save big on your first purchase. Limited time only!',
-      cta: 'Shop Now',
+      title: offerBanners[0]?.title,
+      description: offerBanners[0]?.description,
+      cta: offerBanners[0]?.cta,
       link: '#',
       gradient: 'from-indigo-600 to-purple-600',
-      image: 'photo-1.jpg'
+      image: `http://localhost:5010/uploads/offers/${offerBanners[0]?.image}`
     },
     {
-      title: 'Get 30% Off Your Subscription!',
-      description: 'Unlock premium features with a discounted subscription plan.',
-      cta: 'Subscribe Now',
+      title: offerBanners[1]?.title,
+      description: offerBanners[1]?.description,
+      cta: offerBanners[1]?.cta,
       link: '#',
       gradient: 'from-teal-500 to-cyan-600',
-      image: 'photo-3.jpg'
+      image: `http://localhost:5010/uploads/offers/${offerBanners[1]?.image}`
     },
     {
-      title: 'Free Shipping on Orders Over $50!',
-      description: 'Enjoy free shipping on your next order. Don',
-      cta: 'Order Now',
+      title: offerBanners[2]?.title,
+      description: offerBanners[2]?.description,
+      cta: offerBanners[2]?.cta,
       link: '#',
       gradient: 'from-pink-500 to-rose-600',
-      image: 'photo-3.jpg'
+      image: `http://localhost:5010/uploads/offers/${offerBanners[2]?.image}`
     },
   ];
 
@@ -43,6 +59,9 @@ const OfferBanner = () => {
     const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, []);
+  useEffect(()=>{
+    fetchAllOfferBanners();
+  },[])
 
   return (
     <section className="relative h-120 bg-gray-100  px-4 sm:px-6 lg:px-8 overflow-hidden">

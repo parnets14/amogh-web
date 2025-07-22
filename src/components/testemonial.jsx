@@ -1,38 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import axios from "axios";
+import { set } from "react-hook-form";
 
-const testimonials = [
+
+
+export default function Testimonials() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [testimonialss,setTestimonialss]=useState([]);
+
+
+
+  const fachAllTestimonials=async()=>{
+    try {
+      const res=await axios.get("http://localhost:5010/api/testimonials");
+      setTestimonialss(res.data);
+      
+    } catch (error) {
+      console.log("error this code");
+      
+    }
+  }
+  useEffect(()=>{
+    fachAllTestimonials();
+  },[])
+
+  const nextTestimonial = () => {
+    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevTestimonial = () => {
+    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
+  };
+
+  const testimonials = [
   {
     id: 1,
-    name: "Anjali Sharma",
-    role: "Regular Customer",
-    feedback: "Easy to order and got genuine medicine with prescription validation. Quick delivery too!",
-    avatar: "/avatars/anjali.jpg",
-    rating: 5,
+    name: testimonialss[0]?.name,
+    role: testimonialss[0]?.role,
+    feedback: testimonialss[0]?.feedback,
+    avatar: `http://localhost:5010/uploads/testimonials/${testimonialss[0]?.image}`,
+    rating: testimonialss[0]?.rating,
   },
   {
     id: 2,
-    name: "Dr. Raj Verma",
-    role: "Medical Practitioner",
-    feedback: "Reliable pharmacy platform for my patients. Great support and product availability.",
-    avatar: "/avatars/raj.jpg",
-    rating: 4,
+    name: testimonialss[1]?.name,
+    role: testimonialss[1]?.role, 
+    feedback: testimonialss[1]?.feedback,
+    avatar: `http://localhost:5010/uploads/testimonials/${testimonialss[1]?.image}`,
+    rating: testimonialss[1]?.rating,
   },
   {
     id: 3,
-    name: "Priya Patel",
-    role: "Senior Citizen",
-    feedback: "The home delivery service is a lifesaver for someone like me who can't visit pharmacies easily.",
-    avatar: "/avatars/priya.jpg",
-    rating: 5,
+    name: testimonialss[2]?.name,
+    role: testimonialss[2]?.role, 
+    feedback: testimonialss[2]?.feedback,
+    avatar: `http://localhost:5010/uploads/testimonials/${testimonialss[2]?.image}`,
+    rating: testimonialss[2]?.rating,
   },
   {
     id: 4,
-    name: "Rahul Mehta",
-    role: "Caregiver",
-    feedback: "Excellent customer service and fast prescription processing. Very convenient platform.",
-    avatar: "/avatars/rahul.jpg",
-    rating: 4,
+    name: testimonialss[3]?.name,
+    role: testimonialss[3]?.role, 
+    feedback: testimonialss[3]?.feedback,
+    avatar: `http://localhost:5010/uploads/testimonials/${testimonialss[3]?.image}`,
+    rating: testimonialss[3]?.rating,
   },
 ];
 
@@ -52,17 +84,6 @@ const StarRating = ({ rating }) => {
     </div>
   );
 };
-
-export default function Testimonials() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const nextTestimonial = () => {
-    setActiveIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevTestimonial = () => {
-    setActiveIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
 
   return (
     <section className="py-16 bg-gray-50">

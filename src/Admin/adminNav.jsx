@@ -21,6 +21,17 @@ const adminNav = [
   { name: "Customers", path: "/admin/customers", icon: FiUsers },
   { name: "Inventory", path: "/admin/inventory", icon: FiPackage },
   { name: "Banner", path: "/admin/banner", icon: FiPackage },
+  { name: "Features", path: "/admin/features", icon: FiPackage },
+  { name: "Offer Banner", path: "/admin/offerBanner", icon: FiPackage },
+  { name: "Testimonials", path: "/admin/testimonials", icon: FiPackage },
+  { name: "Contact Information", path: "/admin/contactInformation", icon: FiPackage },
+  { name: "Send a Message", path: "/admin/sendMessage", icon: FiPackage },
+  { name: "Our Location", path: "/admin/location", icon: FiPackage },
+  { name: "Mission", path: "/admin/mission", icon: FiPackage },
+  { name: "Core Values", path: "/admin/coreValues", icon: FiPackage },
+  { name: "Leaders", path: "/admin/leaders", icon: FiPackage },
+  { name: "About", path: "/admin/about", icon: FiPackage },
+ 
 
 
   

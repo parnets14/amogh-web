@@ -1,7 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, Check, Heart, Zap, Info, Search, Filter, ArrowLeft } from "lucide-react";
-import { medicalProducts } from "../components/Products.jsx/productData";
+import axios from "axios";
 
 export default function AllProducts() {
   const navigate = useNavigate();
@@ -11,14 +12,53 @@ export default function AllProducts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [medicalProducts, setMedicalProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get unique categories for filter
-  const categories = ["all", ...new Set(medicalProducts.map(product => product.category))];
+  // Fetch all products
+  const fetchAllProducts = async () => {
+    try {
+      const res = await axios.get("http://localhost:5010/api/products");
+      console.log("API response:", res.data);
+      setMedicalProducts(res.data.products || []);
+    } catch (error) {
+      console.error("Fetch products error:", error);
+    }
+  };
 
-useEffect(()=>{
-    window.scrollTo(0,0)
-},[])
+  // Fetch all categories
+  const fetchAllCategories = async () => {
+    try {
+      const res = await axios.get("http://localhost:5010/api/categories");
+      console.log("Categories response:", res.data);
+      setCategories(res.data || []);
+    } catch (error) {
+      console.error("Fetch categories error:", error);
+      // Fallback: extract categories from products if API fails
+      const uniqueCategories = [...new Set(medicalProducts.map(product => product.category))];
+      setCategories(uniqueCategories);
+    }
+  };
 
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([fetchAllProducts(), fetchAllCategories()]);
+      setLoading(false);
+    };
+    
+    loadData();
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Update categories when products change (fallback method)
+  useEffect(() => {
+    if (medicalProducts.length > 0 && categories.length === 0) {
+      const uniqueCategories = [...new Set(medicalProducts.map(product => product.category))];
+      setCategories(uniqueCategories);
+    }
+  }, [medicalProducts, categories.length]);
 
   const addToCart = (productId) => {
     if (!cart.includes(productId)) {
@@ -38,27 +78,48 @@ useEffect(()=>{
     }
   };
 
+   const getImageUrl = (path) => {
+    if (!path) return '/placeholder-product.png'; // Add a placeholder image
+    if (path.startsWith('http')) return path;
+    return `http://localhost:5010${path}`;
+  }; 
+
   // Filter products based on search term, category, and price range
   const filteredProducts = medicalProducts.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         product.technology.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+    const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         product.technology?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Handle category filtering - check if product.category matches selected category ID or name
+    const matchesCategory = selectedCategory === "all" || 
+                           product.category === selectedCategory ||
+                           product.categoryId === selectedCategory;
+    
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
+  if (loading) {
+    return (
+      <div className="w-full py-10 px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-center items-center h-64">
+          <div className="text-gray-500">Loading products and categories...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full py-10 px-4 sm:px-6 lg:px-8">
       {/* Back Button */}
       <div>
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center text-[#01A4D5] hover:text-[#01A4D5] cursor-pointer mb-6 transition-colors duration-200"
-      >
-        <ArrowLeft className="w-5 h-5 mr-1" />
-        Back
-      </button>
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center text-[#01A4D5] hover:text-[#01A4D5] cursor-pointer mb-6 transition-colors duration-200"
+        >
+          <ArrowLeft className="w-5 h-5 mr-1" />
+          Back
+        </button>
       </div>
 
       <div className="mb-8">
@@ -91,9 +152,13 @@ useEffect(()=>{
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >
+                <option value="all">All Categories</option>
                 {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category === "all" ? "All Categories" : category}
+                  <option 
+                    key={category._id || category.id || category} 
+                    value={category._id || category.id || category}
+                  >
+                    {category.name || category}
                   </option>
                 ))}
               </select>
@@ -101,7 +166,9 @@ useEffect(()=>{
             
             {/* Price Range Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Price Range: ${priceRange[0]} - ${priceRange[1]}</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Price Range: ${priceRange[0]} - ${priceRange[1]}
+              </label>
               <div className="flex items-center space-x-2">
                 <input
                   type="range"
@@ -129,6 +196,13 @@ useEffect(()=>{
         {/* Results Count */}
         <div className="mb-4 text-sm text-gray-500">
           Showing {filteredProducts.length} of {medicalProducts.length} products
+          {selectedCategory !== "all" && (
+            <span className="ml-2 text-indigo-600">
+              in "{categories.find(cat => 
+                (cat._id || cat.id || cat) === selectedCategory
+              )?.name || selectedCategory}"
+            </span>
+          )}
         </div>
       </div>
 
@@ -137,7 +211,7 @@ useEffect(()=>{
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div
-              key={product.id}
+              key={product._id || product.id}
               className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative group"
             >
               {/* Product Badges */}
@@ -156,24 +230,25 @@ useEffect(()=>{
 
               {/* Wishlist Button */}
               <button
-                onClick={() => toggleWishlist(product.id)}
+                onClick={() => toggleWishlist(product._id || product.id)}
                 className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all duration-200 ${
-                  wishlist.includes(product.id)
+                  wishlist.includes(product._id || product.id)
                     ? "text-red-500 bg-white shadow-md animate-pulse"
                     : "text-gray-400 bg-white/80 hover:bg-white hover:text-red-500"
                 }`}
               >
                 <Heart
                   size={18}
-                  fill={wishlist.includes(product.id) ? "currentColor" : "none"}
+                  fill={wishlist.includes(product._id || product.id) ? "currentColor" : "none"}
                 />
               </button>
 
               {/* Product Image */}
               <div className="relative h-48 bg-gray-50 p-3 flex items-center justify-center">
-                <img
-                  src={product.image}
-                  alt={product.name}
+                  <img
+                      src={getImageUrl(product.images?.[0]?.url)}
+                      alt={product.name}
+                 
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
@@ -190,12 +265,12 @@ useEffect(()=>{
                         : "text-green-500"
                   }`}
                 >
-                  {product.category.toUpperCase()}
+                  {(typeof product.category === 'object' ? product.category.name : product.category)?.toUpperCase()}
                 </span>
 
                 <h3 className="font-semibold text-base mb-2 line-clamp-2 min-h-[2.5rem]">
                   <Link
-                    to={`/products/${product.slug}`}
+                    to={`/products/${product.slug || product._id}`}
                     className="hover:text-indigo-500 transition-colors duration-200"
                   >
                     {product.name}
@@ -224,7 +299,7 @@ useEffect(()=>{
                     <div>
                       <p className="text-xs text-gray-500">Starting at</p>
                       <p className="text-base font-semibold text-indigo-600">
-                        ${product.price.toLocaleString()}
+                        ${product.price?.toLocaleString()}
                       </p>
                     </div>
                     <span
@@ -246,23 +321,23 @@ useEffect(()=>{
 
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      onClick={() => addToCart(product.id)}
-                      disabled={product.stock === 0 || cart.includes(product.id)}
+                      onClick={() => addToCart(product._id || product.id)}
+                      disabled={product.stock === 0 || cart.includes(product._id || product.id)}
                       className={`flex items-center justify-center py-2 px-3 rounded-md text-xs font-medium transition-all duration-200 ${
-                        addedItems[product.id]
+                        addedItems[product._id || product.id]
                           ? "bg-green-100 text-green-700 border border-green-200"
-                          : cart.includes(product.id)
+                          : cart.includes(product._id || product.id)
                             ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                             : product.stock === 0
                               ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
-                              : "bg-[#01A4D5] hover:bg-[#01A4e9] cursor-pointer  text-white hover:shadow-sm"
+                              : "bg-[#01A4D5] hover:bg-[#01A4e9] cursor-pointer text-white hover:shadow-sm"
                       }`}
                     >
-                      {addedItems[product.id] ? (
+                      {addedItems[product._id || product.id] ? (
                         <>
                           <Check size={16} className="mr-1" /> Added
                         </>
-                      ) : cart.includes(product.id) ? (
+                      ) : cart.includes(product._id || product.id) ? (
                         "In Cart"
                       ) : product.stock === 0 ? (
                         "Sold Out"
@@ -273,8 +348,8 @@ useEffect(()=>{
                       )}
                     </button>
                     <Link
-                      to={`/products/${product.slug}`}
-                      className="flex items-center justify-center py-2 px-3 border border-[#01A4D5] text-[#01A4D5]  rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
+                      to={`/products/${product._id || product.id}`}
+                      className="flex items-center justify-center py-2 px-3 border border-[#01A4D5] text-[#01A4D5] rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
                     >
                       <Info size={16} className="mr-1" /> Details
                     </Link>

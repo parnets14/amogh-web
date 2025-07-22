@@ -3,10 +3,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-export default function AdminLogin() {
+export default function AdminRegister() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: 'admin@amg.com',
+    email: '',
     password: ''
   });
   const [error, setError] = useState('');
@@ -21,22 +21,21 @@ export default function AdminLogin() {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/admin/login`,
+        `${import.meta.env.VITE_API_URL}/api/admin/register`,
         formData
       );
 
       localStorage.setItem('adminToken', data.token);
-     
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err?.response?.data?.message || 'Login failed. Please check your credentials and try again.');
+      setError(err?.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -46,8 +45,8 @@ export default function AdminLogin() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 px-4 py-12">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-100">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">Admin Login</h2>
-          <p className="mt-2 text-gray-600">Access your admin dashboard</p>
+          <h2 className="text-3xl font-bold text-gray-800">Create Admin Account</h2>
+          <p className="mt-2 text-gray-600">Register for the admin dashboard</p>
         </div>
         
         {error && (
@@ -56,7 +55,7 @@ export default function AdminLogin() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleRegister} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -85,6 +84,7 @@ export default function AdminLogin() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                minLength={6}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition pr-10"
                 placeholder="••••••••"
               />
@@ -102,26 +102,6 @@ export default function AdminLogin() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <Link to="/admin/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
-                Forgot password?
-              </Link>
-            </div>
-          </div>
-
           <button
             type="submit"
             disabled={loading}
@@ -135,17 +115,17 @@ export default function AdminLogin() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Signing in...
+                Registering...
               </span>
-            ) : 'Sign In'}
+            ) : 'Register'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/admin/register" className="font-medium text-blue-600 hover:text-blue-500">
-              Register here
+            Already have an account?{' '}
+            <Link to="/admin/login" className="font-medium text-blue-600 hover:text-blue-500">
+              Sign in here
             </Link>
           </p>
         </div>

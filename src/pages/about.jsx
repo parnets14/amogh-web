@@ -1,8 +1,59 @@
 import { Link } from "react-router-dom";
 import { Heart, Award, Users, ArrowRight, Shield, Target, Activity } from "lucide-react";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function About() {
+// const [stats,setStats] = useState([]);
+// const [team,setTeam] = useState([]);
+// const [values,setValues] = useState([]);
+// const [mission,setMission] = useState([]);
+
+// const fetchMission=async()=>{
+//   try {
+//     const res=await axios.get("http://localhost:5010/mission");
+//     setMission(res.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// const fachAllStats=async()=>{
+//   try {
+//     const res=await axios.get("http://localhost:5010/about");
+//     setStats(res.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+// const fachAllTeam=async()=>{
+//   try {
+//     const res=await axios.get("http://localhost:5010/team");
+//     setTeam(res.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+// const fachAllValues=async()=>{
+//   try {
+//     const res=await axios.get("http://localhost:5010/values");
+//     setValues(res.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+// useEffect(()=>{
+//   fachAllStats();
+//   fachAllTeam();
+//   fachAllValues();
+//   fetchMission();
+// },[])
+
+
+
+
   const values = [
     {
       icon: Heart,

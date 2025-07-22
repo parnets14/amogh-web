@@ -21,6 +21,12 @@ window.scrollTo(0,0)
 
   const { orderNumber, product, subtotal, shipping, tax, total } = state;
 
+    const getImageUrl = (path) => {
+    if (!path) return '/placeholder-product.png';
+    if (path.startsWith('http')) return path;
+    return `http://localhost:5010${path}`;
+  };
+
   return (
     <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-8">
@@ -36,7 +42,7 @@ window.scrollTo(0,0)
         
         <div className="flex items-start mb-6 pb-6 border-b">
           <img 
-            src={product.image} 
+            src={getImageUrl(product.images?.[0]?.url)}
             alt={product.name} 
             className="w-20 h-20 object-contain mr-4"
           />
