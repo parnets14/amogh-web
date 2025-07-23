@@ -357,9 +357,13 @@ import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart, Check, Heart, Zap, Info, ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, selectCartItems } from "../../redux/cartSlice";
+
 
 export default function MedicalProductCarousel() {
-  const [cart, setCart] = useState([]);
+  const dispatch = useDispatch();
+  const cartItems = useSelector(selectCartItems);
   const [wishlist, setWishlist] = useState([]);
   const [addedItems, setAddedItems] = useState({});
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -409,14 +413,28 @@ export default function MedicalProductCarousel() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const addToCart = (productId) => {
-    if (!cart.includes(productId)) {
-      setCart([...cart, productId]);
-      setAddedItems({ ...addedItems, [productId]: true });
-      setTimeout(() => {
-        setAddedItems({ ...addedItems, [productId]: false });
-      }, 2000);
-    }
+  const handleAddToCart = (product) => {
+    const cartItem = {
+        productId: product._id, // Adding product ID
+    instrumentId: product._id,
+    name: product.name,
+    price: product.price,
+    quantity: 1,
+    image: product.images?.[0]?.url || '',
+    discount: 0,
+    tax: 0,
+    deliveryFee: 0,
+    finalPrice: product.price,
+    totalPrice: product.price,
+    };
+    
+    dispatch(addToCart(cartItem));
+    
+    // Show "Added" feedback
+    setAddedItems({ ...addedItems, [product._id]: true });
+    setTimeout(() => {
+      setAddedItems({ ...addedItems, [product._id]: false });
+    }, 2000);
   };
 
   const toggleWishlist = (productId) => {
@@ -465,9 +483,14 @@ export default function MedicalProductCarousel() {
   }, [nextSlide]);
 
   const getImageUrl = (path) => {
-    if (!path) return '/placeholder-product.png'; // Add a placeholder image
+    if (!path) return '/placeholder-product.png';
     if (path.startsWith('http')) return path;
     return `http://localhost:5010${path}`;
+  };
+
+  // Check if product is in cart
+  const isInCart = (productId) => {
+    return cartItems.some(item => item.instrumentId === productId);
   };
 
   if (isLoading) {
@@ -685,12 +708,12 @@ export default function MedicalProductCarousel() {
 
                       <div className="grid grid-cols-2 gap-1 sm:gap-2">
                         <button
-                          onClick={() => addToCart(product._id)}
-                          disabled={product.stock === 0 || cart.includes(product._id)}
+                          onClick={() => handleAddToCart(product)}
+                          disabled={product.stock === 0 || isInCart(product._id)}
                           className={`flex items-center justify-center py-1.5 sm:py-2 px-1.5 sm:px-3 rounded-md text-[0.65rem] sm:text-xs font-medium transition-all duration-200 ${
                             addedItems[product._id]
                               ? "bg-green-100 text-green-700 border border-green-200"
-                              : cart.includes(product._id)
+                              : isInCart(product._id)
                                 ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                                 : product.stock === 0
                                   ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
@@ -699,7 +722,7 @@ export default function MedicalProductCarousel() {
                           aria-label={
                             addedItems[product._id]
                               ? "Added to cart"
-                              : cart.includes(product._id)
+                              : isInCart(product._id)
                                 ? "Already in cart"
                                 : product.stock === 0
                                   ? "Out of stock"
@@ -710,7 +733,7 @@ export default function MedicalProductCarousel() {
                             <>
                               <Check size={14} className="mr-0.5 sm:mr-1" /> Added
                             </>
-                          ) : cart.includes(product._id) ? (
+                          ) : isInCart(product._id) ? (
                             "In Cart"
                           ) : product.stock === 0 ? (
                             "Sold Out"

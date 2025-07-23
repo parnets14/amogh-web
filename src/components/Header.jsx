@@ -1,24 +1,24 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { FiMenu, FiX, FiShoppingCart, FiUser, FiSearch, FiHeart } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
+import { selectCartTotalQuantity } from '../redux/cartSlice';
+
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [cartItems] = useState(3); // Replace with actual cart state
+  const cartItemsCount = useSelector(selectCartTotalQuantity);
   const [wishlistItems] = useState(2); // Replace with actual wishlist state
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
-        {/* Top Bar */}
-        
-
         {/* Main Header */}
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-           < img 
+            <img 
               src="/Amg logo.jpeg" 
               alt="AMG Logo" 
               className="h-10 mr-2" // Adjust height as needed
@@ -58,9 +58,7 @@ export default function Header() {
               >
                 Home
               </NavLink>
-            
-             
-
+              
               <NavLink 
                 to="/categories" 
                 className={({isActive}) => 
@@ -125,9 +123,9 @@ export default function Header() {
             {/* Cart with badge */}
             <Link to="/cart" className="relative text-gray-700 hover:text-blue-600 transition-colors">
               <FiShoppingCart className="w-5 h-5" />
-              {cartItems > 0 && (
+              {cartItemsCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItems}
+                  {cartItemsCount}
                 </span>
               )}
             </Link>
