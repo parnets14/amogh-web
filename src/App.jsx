@@ -39,6 +39,7 @@ import AdminMission from "./Admin/AdminMission";
 import AdminCoreValues from "./Admin/AdminCoreValues";
 import AdminLeaders from "./Admin/AdminLeaders";
 import AdminAbout from "./Admin/AdminAbout";
+import ProfilePage from "./pages/ProfilePage";
 ;
 
 
@@ -62,6 +63,8 @@ function App() {
         <Route path="categories" element={<ProductCategorySection />} />
          <Route path="/allproducts/*" element={<AllMedicalProduct />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="profile" element={<ProfilePage />} />
+        {/* <Route path="/orders/:id" element={<Orders />} /> */}
       </Route>
 
       {/* Admin Routes */}

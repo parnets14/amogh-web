@@ -1,16 +1,17 @@
 
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ShoppingCart, Check, Heart, Zap, Info, Search, Filter, ArrowLeft } from "lucide-react";
 import axios from "axios";
 
 export default function AllProducts() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [addedItems, setAddedItems] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
   const [priceRange, setPriceRange] = useState([0, 10000]);
   const [medicalProducts, setMedicalProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -20,7 +21,6 @@ export default function AllProducts() {
   const fetchAllProducts = async () => {
     try {
       const res = await axios.get("http://localhost:5010/api/products");
-      console.log("API response:", res.data);
       setMedicalProducts(res.data.products || []);
     } catch (error) {
       console.error("Fetch products error:", error);
@@ -31,13 +31,17 @@ export default function AllProducts() {
   const fetchAllCategories = async () => {
     try {
       const res = await axios.get("http://localhost:5010/api/categories");
-      console.log("Categories response:", res.data);
       setCategories(res.data || []);
     } catch (error) {
       console.error("Fetch categories error:", error);
-      // Fallback: extract categories from products if API fails
-      const uniqueCategories = [...new Set(medicalProducts.map(product => product.category))];
-      setCategories(uniqueCategories);
+      // Fallback: extract categories from products
+      const uniqueCategories = [...new Set(medicalProducts.map(product => {
+        if (typeof product.category === 'object') {
+          return { _id: product.category._id, name: product.category.name };
+        }
+        return { _id: product.category, name: product.category };
+      }))];
+      setCategories(uniqueCategories.filter(cat => cat._id));
     }
   };
 
@@ -55,8 +59,13 @@ export default function AllProducts() {
   // Update categories when products change (fallback method)
   useEffect(() => {
     if (medicalProducts.length > 0 && categories.length === 0) {
-      const uniqueCategories = [...new Set(medicalProducts.map(product => product.category))];
-      setCategories(uniqueCategories);
+      const uniqueCategories = [...new Set(medicalProducts.map(product => {
+        if (typeof product.category === 'object') {
+          return { _id: product.category._id, name: product.category.name };
+        }
+        return { _id: product.category, name: product.category };
+      }))];
+      setCategories(uniqueCategories.filter(cat => cat._id));
     }
   }, [medicalProducts, categories.length]);
 
@@ -78,21 +87,22 @@ export default function AllProducts() {
     }
   };
 
-   const getImageUrl = (path) => {
-    if (!path) return '/placeholder-product.png'; // Add a placeholder image
+  const getImageUrl = (path) => {
+    if (!path) return '/placeholder-product.png';
     if (path.startsWith('http')) return path;
     return `http://localhost:5010${path}`;
-  }; 
+  };
 
   // Filter products based on search term, category, and price range
   const filteredProducts = medicalProducts.filter((product) => {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          product.technology?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // Handle category filtering - check if product.category matches selected category ID or name
+    // Handle category filtering
     const matchesCategory = selectedCategory === "all" || 
-                           product.category === selectedCategory ||
-                           product.categoryId === selectedCategory;
+                          (typeof product.category === 'object' 
+                            ? product.category._id === selectedCategory
+                            : product.category === selectedCategory);
     
     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
     
@@ -155,10 +165,10 @@ export default function AllProducts() {
                 <option value="all">All Categories</option>
                 {categories.map((category) => (
                   <option 
-                    key={category._id || category.id || category} 
-                    value={category._id || category.id || category}
+                    key={category._id} 
+                    value={category._id}
                   >
-                    {category.name || category}
+                    {category.name}
                   </option>
                 ))}
               </select>
@@ -198,9 +208,7 @@ export default function AllProducts() {
           Showing {filteredProducts.length} of {medicalProducts.length} products
           {selectedCategory !== "all" && (
             <span className="ml-2 text-indigo-600">
-              in "{categories.find(cat => 
-                (cat._id || cat.id || cat) === selectedCategory
-              )?.name || selectedCategory}"
+              in "{categories.find(cat => cat._id === selectedCategory)?.name}"
             </span>
           )}
         </div>
@@ -211,7 +219,7 @@ export default function AllProducts() {
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div
-              key={product._id || product.id}
+              key={product._id}
               className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col h-full relative group"
             >
               {/* Product Badges */}
@@ -230,25 +238,24 @@ export default function AllProducts() {
 
               {/* Wishlist Button */}
               <button
-                onClick={() => toggleWishlist(product._id || product.id)}
+                onClick={() => toggleWishlist(product._id)}
                 className={`absolute top-2 right-2 z-10 p-1.5 rounded-full transition-all duration-200 ${
-                  wishlist.includes(product._id || product.id)
+                  wishlist.includes(product._id)
                     ? "text-red-500 bg-white shadow-md animate-pulse"
                     : "text-gray-400 bg-white/80 hover:bg-white hover:text-red-500"
                 }`}
               >
                 <Heart
                   size={18}
-                  fill={wishlist.includes(product._id || product.id) ? "currentColor" : "none"}
+                  fill={wishlist.includes(product._id) ? "currentColor" : "none"}
                 />
               </button>
 
               {/* Product Image */}
               <div className="relative h-48 bg-gray-50 p-3 flex items-center justify-center">
-                  <img
-                      src={getImageUrl(product.images?.[0]?.url)}
-                      alt={product.name}
-                 
+                <img
+                  src={getImageUrl(product.images?.[0]?.url)}
+                  alt={product.name}
                   className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   loading="lazy"
                 />
@@ -321,23 +328,23 @@ export default function AllProducts() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <button
-                      onClick={() => addToCart(product._id || product.id)}
-                      disabled={product.stock === 0 || cart.includes(product._id || product.id)}
+                      onClick={() => addToCart(product._id)}
+                      disabled={product.stock === 0 || cart.includes(product._id)}
                       className={`flex items-center justify-center py-2 px-3 rounded-md text-xs font-medium transition-all duration-200 ${
-                        addedItems[product._id || product.id]
+                        addedItems[product._id]
                           ? "bg-green-100 text-green-700 border border-green-200"
-                          : cart.includes(product._id || product.id)
+                          : cart.includes(product._id)
                             ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                             : product.stock === 0
                               ? "bg-gray-100 text-gray-500 border border-gray-200 cursor-not-allowed"
                               : "bg-[#01A4D5] hover:bg-[#01A4e9] cursor-pointer text-white hover:shadow-sm"
                       }`}
                     >
-                      {addedItems[product._id || product.id] ? (
+                      {addedItems[product._id] ? (
                         <>
                           <Check size={16} className="mr-1" /> Added
                         </>
-                      ) : cart.includes(product._id || product.id) ? (
+                      ) : cart.includes(product._id) ? (
                         "In Cart"
                       ) : product.stock === 0 ? (
                         "Sold Out"
@@ -348,7 +355,7 @@ export default function AllProducts() {
                       )}
                     </button>
                     <Link
-                      to={`/products/${product._id || product.id}`}
+                      to={`/products/${product._id}`}
                       className="flex items-center justify-center py-2 px-3 border border-[#01A4D5] text-[#01A4D5] rounded-md text-xs font-medium transition-all duration-200 hover:shadow-sm"
                     >
                       <Info size={16} className="mr-1" /> Details

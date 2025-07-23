@@ -20,14 +20,13 @@
 // // Custom Arrow Components
 // const SampleNextArrow = (props) => {
 //   const { className, style, onClick } = props;
-
 //   return (
 //     <div
-//       className={`${className} group absolute right-0 z-10 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center transition-all duration-300 hover:bg-gray-100 hover:scale-105`}
-//       style={{ ...style, right: '-12px' }}
+//       className={`${className} !flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg hover:bg-gray-50 transition-all duration-200 before:hidden`}
+//       style={{ ...style, right: '-15px', zIndex: 1 }}
 //       onClick={onClick}
 //     >
-//       <ArrowRight className="w-5 h-5 text-gray-700 group-hover:text-gray-900 transition-colors duration-200" />
+//       <ArrowRight className="w-5 h-5 text-gray-700" />
 //     </div>
 //   );
 // };
@@ -36,11 +35,11 @@
 //   const { className, style, onClick } = props;
 //   return (
 //     <div
-//       className={`${className} bg-white shadow-lg rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-100`}
-//       style={{ ...style, left: '-10px', zIndex: 1 }}
+//       className={`${className} !flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg hover:bg-gray-50 transition-all duration-200 before:hidden`}
+//       style={{ ...style, left: '-15px', zIndex: 1 }}
 //       onClick={onClick}
 //     >
-//       <ArrowRight className="w-4 h-4 text-gray-700 transform rotate-180" />
+//       <ArrowRight className="w-5 h-5 text-gray-700 transform rotate-180" />
 //     </div>
 //   );
 // };
@@ -211,7 +210,7 @@
 //     }
 //   }, [medicalCategories.length]);
 
-//   const categorySliderSettings = {
+//   const sliderSettings = {
 //     dots: false,
 //     infinite: false,
 //     speed: 400,
@@ -220,57 +219,52 @@
 //     nextArrow: <SampleNextArrow />,
 //     prevArrow: <SamplePrevArrow />,
 //     responsive: [
-//       { 
-//         breakpoint: 1024, 
-//         settings: { 
-//           slidesToShow: 4,
-//           arrows: false
-//         } 
-//       },
-//       { 
-//         breakpoint: 768, 
-//         settings: { 
-//           slidesToShow: 3,
-//           arrows: false
-//         } 
-//       },
-//       { 
-//         breakpoint: 480, 
-//         settings: { 
-//           slidesToShow: 2,
-//           arrows: false
-//         } 
-//       }
-//     ]
-//   };
-
-//   const sliderSettings = {
-//     dots: false,
-//     infinite: false,
-//     speed: 400,
-//     slidesToShow: 6,
-//     slidesToScroll: 1,
-//     nextArrow: <SampleNextArrow />,
-//     prevArrow: <SamplePrevArrow />,
-//     responsive: [
 //       {
 //         breakpoint: 1024,
 //         settings: {
-//           slidesToShow: 4,
-//           arrows: false
+//           slidesToShow: 3,
+//           arrows: true
 //         },
 //       },
 //       {
 //         breakpoint: 768,
 //         settings: {
-//           slidesToShow: 3,
+//           slidesToShow: 2,
 //           arrows: false
 //         },
 //       },
 //       {
 //         breakpoint: 480,
 //         settings: {
-//           slidesToShow: 2,
+//           slidesToShow: 1,
+//           arrows: false
+//         },
+//       },
+//     ],
+//   };
+
+//   const categorySliderSettings = {
+//     ...sliderSettings,
+//     slidesToShow: Math.min(medicalCategories.length, 5),
+//     responsive: [
+//       {
+//         breakpoint: 1024,
+//         settings: {
+//           slidesToShow: Math.min(medicalCategories.length, 4),
+//           arrows: true
+//         },
+//       },
+//       {
+//         breakpoint: 768,
+//         settings: {
+//           slidesToShow: Math.min(medicalCategories.length, 3),
+//           arrows: false
+//         },
+//       },
+//       {
+//         breakpoint: 480,
+//         settings: {
+//           slidesToShow: Math.min(medicalCategories.length, 2),
 //           arrows: false
 //         },
 //       },
@@ -278,7 +272,7 @@
 //   };
 
 //   const navigateToCategoryProducts = useCallback((slug) => {
-//     navigate(`/allproducts?category=${encodeURIComponent(slug)}`);
+//     navigate(`/allproducts?category=${slug}`);
 //   }, [navigate]);
 
 //   const navigateToAllProducts = useCallback(() => {
@@ -619,7 +613,8 @@ export default function MedicalShowcase() {
           color: CATEGORY_COLORS[0],
           description: "Advanced pathology testing equipment",
           products: 122,
-          slug: "pathology"
+          slug: "pathology",
+          id: "pathology"
         },
         {
           name: "Hematology",
@@ -628,7 +623,8 @@ export default function MedicalShowcase() {
           color: CATEGORY_COLORS[1],
           description: "Complete blood analysis systems",
           products: 89,
-          slug: "hematology"
+          slug: "hematology",
+          id: "hematology"
         },
         {
           name: "Microbiology",
@@ -637,7 +633,8 @@ export default function MedicalShowcase() {
           color: CATEGORY_COLORS[2],
           description: "Microorganism detection and analysis",
           products: 76,
-          slug: "microbiology"
+          slug: "microbiology",
+          id: "microbiology"
         },
         {
           name: "Cardiology",
@@ -646,7 +643,8 @@ export default function MedicalShowcase() {
           color: CATEGORY_COLORS[3],
           description: "Heart health monitoring devices",
           products: 104,
-          slug: "cardiology"
+          slug: "cardiology",
+          id: "cardiology"
         },
         {
           name: "Neurology",
@@ -655,7 +653,8 @@ export default function MedicalShowcase() {
           color: CATEGORY_COLORS[4],
           description: "Brain and nervous system diagnostics",
           products: 67,
-          slug: "neurology"
+          slug: "neurology",
+          id: "neurology"
         }
       ];
     }
@@ -671,7 +670,8 @@ export default function MedicalShowcase() {
         color: CATEGORY_COLORS[colorIndex],
         description: category.description || `Premium ${category.name} equipment`,
         products: category.products || Math.floor(Math.random() * 100) + 10,
-        slug: category.slug || category.name.toLowerCase().replace(/\s+/g, '-')
+        slug: category.slug || category.name.toLowerCase().replace(/\s+/g, '-'),
+        id: category._id || category.id || category.slug
       };
     });
   }, [categories]);
@@ -781,8 +781,8 @@ export default function MedicalShowcase() {
     ],
   };
 
-  const navigateToCategoryProducts = useCallback((slug) => {
-    navigate(`/allproducts?category=${slug}`);
+  const navigateToCategoryProducts = useCallback((categoryId) => {
+    navigate(`/allproducts?category=${categoryId}`);
   }, [navigate]);
 
   const navigateToAllProducts = useCallback(() => {
@@ -840,7 +840,7 @@ export default function MedicalShowcase() {
   const CategoryCard = ({ category }) => (
     <div
       className="group relative overflow-hidden rounded-lg md:rounded-xl shadow-md hover:shadow-xl transition-all hover:-translate-y-1 duration-300 cursor-pointer"
-      onClick={() => navigateToCategoryProducts(category.slug)}
+      onClick={() => navigateToCategoryProducts(category.id)}
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10"></div>
       <div className="aspect-[4/3] overflow-hidden">
@@ -858,7 +858,7 @@ export default function MedicalShowcase() {
           className="inline-flex items-center text-xs md:text-sm font-medium text-white hover:underline"
           onClick={(e) => {
             e.stopPropagation();
-            navigateToCategoryProducts(category.slug);
+            navigateToCategoryProducts(category.id);
           }}
         >
           View all
@@ -948,7 +948,7 @@ export default function MedicalShowcase() {
                   <div>
                     <button 
                       className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors"
-                      onClick={() => navigateToCategoryProducts(activeCategory.slug)}
+                      onClick={() => navigateToCategoryProducts(activeCategory.id)}
                     >
                       Explore Collection
                       <ArrowRight className="ml-2 w-4 h-4" />
