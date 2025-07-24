@@ -40,7 +40,10 @@ import AdminCoreValues from "./Admin/AdminCoreValues";
 import AdminLeaders from "./Admin/AdminLeaders";
 import AdminAbout from "./Admin/AdminAbout";
 import ProfilePage from "./pages/ProfilePage";
-;
+import AdminUsersPanel from "./Admin/AdminUsersPanel";
+import AdminAllAdmin from "./Admin/AdminAllAdmin";
+
+
 
 
 // Admin Pages
@@ -89,6 +92,9 @@ function App() {
         <Route  path="coreValues" element={<AdminCoreValues/>}/>
         <Route  path="leaders" element={<AdminLeaders/>}/>
         <Route  path="about" element={<AdminAbout/>}/>
+        <Route  path="customers" element={<AdminUsersPanel />} />
+        <Route  path="allAdmin" element={<AdminAllAdmin />} />
+
         
      
       </Route>

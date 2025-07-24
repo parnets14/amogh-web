@@ -69,12 +69,12 @@ export default function BannerCarousel() {
               <p className="text-lg md:text-xl mb-6 drop-shadow-sm">
                 {slide.description}
               </p>
-              <Link
+              {/* <Link
                 to={slide.cta || '#'}
                 className="bg-yellow-400 text-black font-semibold px-6 py-3 rounded-md hover:bg-yellow-500 transition-all duration-300 shadow-md"
               >
                 {slide.cta || 'Learn More'}
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>

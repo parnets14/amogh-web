@@ -1,10 +1,27 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiMapPin, FiMail, FiPhone, FiSend, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
+import axios from 'axios';
+import { set } from 'date-fns';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
+
+  const fachAllContect=async()=>{
+    try {
+      const res=await axios.get("http://localhost:5010/api/contact-info")
+      setContact(res.data)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+  useEffect(()=>{
+    fachAllContect()
+  },[])
 
   const quickLinks = [
     { name: 'Home', href: '/' },
@@ -86,7 +103,7 @@ export default function Footer() {
             <address className="not-italic space-y-5 text-gray-300 text-base">
               <div className="flex items-start">
                 <FiMapPin className="w-6 h-6 text-indigo-400 mt-1 mr-4 flex-shrink-0" />
-                <p>123 Performance Avenue<br/>Motorsport City, MC 10001</p>
+                <p>{contact.address}</p>
               </div>
               <div className="flex items-center">
                 <FiMail className="w-6 h-6 text-indigo-400 mr-4 flex-shrink-0" />
@@ -94,16 +111,16 @@ export default function Footer() {
                   href="mailto:info@amg.com" 
                   className="hover:text-indigo-400 transition-colors duration-200"
                 >
-                  info@amg.com
+                  {contact.email}
                 </a>
               </div>
               <div className="flex items-center">
                 <FiPhone className="w-6 h-6 text-indigo-400 mr-4 flex-shrink-0" />
                 <a 
-                  href="tel:+1234567890" 
+                  href={`tel:${contact.phone}`} 
                   className="hover:text-indigo-400 transition-colors duration-200"
                 >
-                  (123) 456-7890
+                  {contact.phone}
                 </a>
               </div>
             </address>

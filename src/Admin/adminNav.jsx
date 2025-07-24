@@ -19,7 +19,8 @@ const adminNav = [
   { name: "Categories", path: "/admin/categories", icon: FiLayers },
   { name: "Orders", path: "/admin/orders", icon: FiShoppingCart },
   { name: "Customers", path: "/admin/customers", icon: FiUsers },
-  { name: "Inventory", path: "/admin/inventory", icon: FiPackage },
+  { name: "All Admin", path: "/admin/allAdmin", icon: FiUsers },
+  // { name: "Inventory", path: "/admin/inventory", icon: FiPackage },
   { name: "Banner", path: "/admin/banner", icon: FiPackage },
   { name: "Features", path: "/admin/features", icon: FiPackage },
   { name: "Offer Banner", path: "/admin/offerBanner", icon: FiPackage },
@@ -35,8 +36,8 @@ const adminNav = [
 
 
   
-  { name: "Support Tickets", path: "/admin/support", icon: FiMessageSquare },
-  { name: "Settings", path: "/admin/settings", icon: FiSettings }
+  // { name: "Support Tickets", path: "/admin/support", icon: FiMessageSquare },
+  // { name: "Settings", path: "/admin/settings", icon: FiSettings }
 ];
 
 export default adminNav;

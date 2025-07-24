@@ -129,7 +129,7 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
         </nav>
 
         {/* User & Logout */}
-        <div className="border-t border-gray-200 bg-white p-4">
+        {/* <div className="border-t border-gray-200 bg-white p-4">
           <div className="flex items-center space-x-3 mb-3">
             <div className="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
               AM
@@ -146,7 +146,7 @@ export default function AdminSidebar({ isOpen, setIsOpen }) {
             <FiLogOut className="mr-2 w-4 h-4" />
             <span>Logout</span>
           </button>
-        </div>
+        </div> */}
       </aside>
     </>
   );

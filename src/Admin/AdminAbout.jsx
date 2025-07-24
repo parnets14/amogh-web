@@ -18,7 +18,7 @@ import {
 import axios from "axios";
 
 const API = "http://localhost:5010/api/about";
-
+console.log(localStorage.getItem('adminToken',"hrgr"))
 const AdminAbout = () => {
   const [form] = Form.useForm();
   const [records, setRecords] = useState([]);

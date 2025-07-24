@@ -57,9 +57,9 @@ export default function AdminHeader({ toggleSidebar }) {
       {/* Right - Admin info */}
       <div className="relative">
         <div className="flex items-center space-x-3">
-          <span className="hidden sm:inline text-sm text-gray-600 font-medium">
+          {/* <span className="hidden sm:inline text-sm text-gray-600 font-medium">
             Welcome, {adminName?.split(" ")[0] || "Admin"}
-          </span>
+          </span> */}
 
           <div
             className="relative cursor-pointer"
@@ -77,12 +77,12 @@ export default function AdminHeader({ toggleSidebar }) {
         {/* Dropdown */}
         {showDropdown && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-            <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
+            {/* <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
               <div className="font-medium">{adminName}</div>
               <div className="text-gray-500">admin@amogh.com</div>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               onClick={() => {
                 setShowDropdown(false);
                 navigate("/admin/profile");
@@ -91,7 +91,7 @@ export default function AdminHeader({ toggleSidebar }) {
             >
               <User size={16} />
               <span>Profile</span>
-            </button>
+            </button> */}
 
             <button
               onClick={() => {

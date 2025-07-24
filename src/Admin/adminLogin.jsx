@@ -28,11 +28,12 @@ export default function AdminLogin() {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/admin/login`,
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         formData
       );
 
       localStorage.setItem('adminToken', data.token);
+      console.log(localStorage.getItem('adminToken',"hrgr"))
      
       navigate('/admin/dashboard');
     } catch (err) {
